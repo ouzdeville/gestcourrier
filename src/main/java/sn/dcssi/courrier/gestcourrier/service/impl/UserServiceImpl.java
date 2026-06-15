@@ -1,5 +1,7 @@
 package sn.dcssi.courrier.gestcourrier.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse createUser(UserCreateRequest request) {
-        log.info("Création utilisateur : {}", request.email());
+        log.info("Création utilisateur : {}", request.email()); 
 
         // Validation métier
         if (userRepository.existsByEmail(request.email())) {
@@ -69,14 +71,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(Long id, UserUpdateRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+       User user = userRepository.findById(id).get();
+       user.setEmail(request.email());
+       user.setUsername(request.username());
+       User saved = userRepository.save(user);
+       return userMapper.toResponse(saved);
     }
 
     @Override
     public void deleteUser(Long id) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+        userRepository.deleteById(id);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class UserController {
     }
  
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    //@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public UserResponse updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateRequest request) {
@@ -69,7 +69,7 @@ public class UserController {
  
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
